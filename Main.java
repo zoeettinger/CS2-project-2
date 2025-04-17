@@ -1,6 +1,6 @@
 import java.awt.Color;
 import javax.swing.JFrame;
-
+// i am editing
 /**
  * Initial drawing of stationary objects.
  */
