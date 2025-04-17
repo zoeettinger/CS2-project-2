@@ -1,2 +1,2 @@
-public class MovingPolygon {
+public class MovingPolygons extends RegularPolygon {
 }
