@@ -76,7 +76,6 @@ public class MovingPolygon extends RegularPolygon implements Actor {
             dy = -dy;
         }
 
-        // Update the polygon's position
         translate((int) posx, (int) posy);
     }
 
