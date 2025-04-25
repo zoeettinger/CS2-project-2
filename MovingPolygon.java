@@ -12,6 +12,7 @@ public class MovingPolygon extends RegularPolygon implements Actor {
      * @param nsides the number of sides
      */
     public MovingPolygon(int nsides) {
+
         super(nsides);
     }
 
