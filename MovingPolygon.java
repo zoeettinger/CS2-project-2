@@ -76,7 +76,17 @@ public class MovingPolygon extends RegularPolygon implements Actor {
             dy = -dy;
         }
 
-        translate((int) posx, (int) posy);
+        // translate((int) dx, (int) dy);
     }
 
+    @Override
+    public void draw(Graphics g) {
+        super.draw(g);
+    }
+
+    @Override
+    public boolean collides_with(Actor actor) {
+
+        }
+    }
 }

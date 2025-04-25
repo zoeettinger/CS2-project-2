@@ -1,5 +1,6 @@
 import java.awt.Color;
 import javax.swing.JFrame;
+import java.awt.Graphics;
 // i am editing
 /**
  * Initial drawing of stationary objects.
@@ -14,7 +15,7 @@ public class Main {
     public static void main(String[] args) {
 
         // create some regular polygons
-        DrawablePolygon p1 = new RegularPolygon(3, 50, Color.GREEN);
+        DrawablePolygon p1 = new MovingPolygon(3, 50, Color.GREEN, 100, 80, 50, 50);
         DrawablePolygon p2 = new RegularPolygon(6, 50, Color.ORANGE);
         DrawablePolygon p3 = new RegularPolygon(360, 50, Color.BLUE);
 
@@ -35,6 +36,10 @@ public class Main {
         frame.add(drawing);
         frame.pack();
         frame.setVisible(true);
+        while (true) {
+            p1.step();
+            p1.draw();
+        }
     }
 
 }

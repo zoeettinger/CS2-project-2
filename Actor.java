@@ -17,4 +17,6 @@ public interface Actor {
      */
     void step();
 
+    boolean collides_with(Actor actor);
+
 }

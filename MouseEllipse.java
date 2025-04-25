@@ -1,5 +1,5 @@
-public class EllipseFollowsMouse extends JPanel implements MouseListener, MouseMotionListener {
-
+public class MouseEllipse extends JPanel implements MouseListener, MouseMotionListener {
+// temp private
     private int ellipseX = 100;
     private int ellipseY = 100;
     private int ellipseWidth = 100;
@@ -7,7 +7,7 @@ public class EllipseFollowsMouse extends JPanel implements MouseListener, MouseM
     private boolean dragging = false;
     private Color ellipseColor = Color.BLUE;
 
-    public EllipseFollowsMouse() {
+    public MouseEllipse() {
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
         this.setPreferredSize(new Dimension(400,400));
