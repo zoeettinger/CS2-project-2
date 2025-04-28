@@ -71,5 +71,8 @@ public class Drawing extends Canvas {
         list.remove(actor);
     }
 
+    public void clearActors() {
+        list.clear();
+    }
 
 }

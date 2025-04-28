@@ -1,13 +1,14 @@
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import java.awt.Rectangle;
+
 /**
- * A small character that can move around the screen.
+ * A small character that can move around the screen and lose lives on collision.
  */
 public class Sprite implements Actor, KeyListener {
 
@@ -15,11 +16,19 @@ public class Sprite implements Actor, KeyListener {
     private int ypos;
     private int dx;
     private int dy;
+    private final int speed = 10;           // movement speed per step
     private Image image;
+    private int lives = 3;                  // starting lives
+
+    // track which arrow keys are held down
+    private boolean upPressed;
+    private boolean downPressed;
+    private boolean leftPressed;
+    private boolean rightPressed;
 
     /**
      * Reads a sprite from a png file.
-     * 
+     *
      * @param path location of image file
      * @param xpos initial X coordinate
      * @param ypos initial Y coordinate
@@ -49,65 +58,114 @@ public class Sprite implements Actor, KeyListener {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
-                dy = -5;
+                upPressed = true;
                 break;
             case KeyEvent.VK_DOWN:
-                dy = +5;
+                downPressed = true;
                 break;
             case KeyEvent.VK_LEFT:
-                dx = -5;
+                leftPressed = true;
                 break;
             case KeyEvent.VK_RIGHT:
-                dx = +5;
+                rightPressed = true;
                 break;
         }
+        updateVelocity();
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
+                upPressed = false;
+                break;
             case KeyEvent.VK_DOWN:
-                dy = 0;
+                downPressed = false;
                 break;
             case KeyEvent.VK_LEFT:
+                leftPressed = false;
+                break;
             case KeyEvent.VK_RIGHT:
-                dx = 0;
+                rightPressed = false;
                 break;
         }
+        updateVelocity();
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-        // do nothing
+        // not used
     }
 
-    public Rectangle getBounds() {
-        return new Rectangle(
-                xpos, ypos,
-                image.getWidth(null),
-                image.getHeight(null));
+    private void updateVelocity() {
+        int rawDX = 0;
+        int rawDY = 0;
+        if (leftPressed)  rawDX -= 1;
+        if (rightPressed) rawDX += 1;
+        if (upPressed)    rawDY -= 1;
+        if (downPressed)  rawDY += 1;
+//
+//        dx = rawDX * speed;
+//        dy = rawDY * speed;
+
+        // normalize so diagonal isn't faster
+        double len = Math.hypot(rawDX, rawDY);  // same as sqrt(dx*dx+dy*dy)
+        if (len > 0) {
+            dx = (int) Math.round(rawDX / len * speed);
+            dy = (int) Math.round(rawDY / len * speed);
+        } else {
+            dx = 0;
+            dy = 0;
+        }
     }
+
+
+    public Rectangle getBounds() {
+        int w = image.getWidth(null);
+        int h = image.getHeight(null);
+        int padX = 15;   // 12px padding on left/right (was 8 before)
+        int padY = 15;   // 12px padding on top/bottom (was 8 before)
+
+        return new Rectangle(
+                xpos + padX,
+                ypos + padY,
+                w - 2 * padX,
+                h - 2 * padY
+        );
+    }
+
 
     @Override
     public boolean collides_with(Actor actor) {
+        Rectangle me = getBounds();
 
-        Rectangle me = getBounds();          // my hit-box
-
-        // ----- polygon targets -----
         if (actor instanceof DrawablePolygon) {
-            Rectangle polyBox =
-                    (actor instanceof MovingPolygon)      // moving?
-                            ? ((MovingPolygon) actor).getBounds()
-                            : ((DrawablePolygon) actor).getBounds();
+            Rectangle polyBox = (actor instanceof MovingPolygon)
+                    ? ((MovingPolygon) actor).getWorldBounds()
+                    : ((DrawablePolygon) actor).getBounds();
             return me.intersects(polyBox);
         }
 
-        // ----- another sprite -----
         if (actor instanceof Sprite) {
             return me.intersects(((Sprite) actor).getBounds());
         }
 
-        return false;   // unknown actor type
+        return false;
+    }
+
+    /** Lose one life when hit */
+    @Override
+    public void onCollision(Actor other) {
+        lives--;
+    }
+
+    /** Returns remaining lives ? */
+    public int getLives() {
+        return lives;
+    }
+
+    /** resets lives to 3 */
+    public void resetLives() {
+        this.lives = 3;
     }
 }

@@ -19,4 +19,7 @@ public interface Actor {
 
     boolean collides_with(Actor actor);
 
+
+    void onCollision(Actor other);
+
 }

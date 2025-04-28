@@ -5,6 +5,7 @@ public class MovingPolygon extends RegularPolygon implements Actor {
     float posy = 0;
     private float dx = 0;
     private float dy = 0;
+    private boolean alive = true;
 
     /**
      * Constructs a moving polygon, given the number of sides.
@@ -97,10 +98,22 @@ public class MovingPolygon extends RegularPolygon implements Actor {
     @Override
     public boolean collides_with(Actor actor) {
         if (actor instanceof DrawablePolygon) {
-            DrawablePolygon other = (DrawablePolygon) actor;
-            return this.getBounds().intersects(other.getBounds());
+            Rectangle myBox    = this.getWorldBounds();
+            Rectangle otherBox = (actor instanceof MovingPolygon)
+                    ? ((MovingPolygon)actor).getWorldBounds()
+                    : ((DrawablePolygon)actor).getBounds();  // static polygons have already been translated by translate()
+            return myBox.intersects(otherBox);
         }
         return false;
+    }
+    public boolean isAlive() {
+        return alive;
+    }
+
+    @Override
+    public void onCollision(Actor other) {
+        // the player hit me, so I disappear
+        alive = false;
     }
 
 }

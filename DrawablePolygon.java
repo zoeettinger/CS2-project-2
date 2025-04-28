@@ -49,4 +49,10 @@ public class DrawablePolygon extends Polygon implements Actor {
     public boolean collides_with(Actor actor) {
         return false;
     }
+
+    @Override
+    public void onCollision(Actor other) {
+        // default: do nothing for simple polygons
+    }
+
 }
