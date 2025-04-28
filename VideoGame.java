@@ -71,6 +71,12 @@ public class VideoGame implements ActionListener, KeyListener {
 //            spawnPolygon();
 //        }
 
+        ClickActor clickActor = new ClickActor(drawing, mpolygons, sprite, delta -> this.score += delta, 5000000); // we can pass mpolygons in because java passes these by refs
+        drawing.add(clickActor);
+        drawing.addMouseListener(clickActor);
+
+
+
         JFrame frame = new JFrame("Video Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(drawing);
