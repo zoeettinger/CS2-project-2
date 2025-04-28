@@ -82,12 +82,25 @@ public class MovingPolygon extends RegularPolygon implements Actor {
 
     @Override
     public void draw(Graphics g) {
-        super.draw(g);
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.translate(posx, posy); // move to (posx, posy)
+        super.draw(g2d);            // draw the polygon
+        g2d.dispose();              // cleanup graphics
+    }
+
+    public Rectangle getWorldBounds() {
+        Rectangle r = super.getBounds();      // bounds around the un-shifted vertices
+        r.translate(Math.round(posx), Math.round(posy));
+        return r;
     }
 
     @Override
     public boolean collides_with(Actor actor) {
-
+        if (actor instanceof DrawablePolygon) {
+            DrawablePolygon other = (DrawablePolygon) actor;
+            return this.getBounds().intersects(other.getBounds());
         }
+        return false;
     }
+
 }

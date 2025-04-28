@@ -57,9 +57,19 @@ public class Drawing extends Canvas {
      */
     public void step() {
         for (Actor actor : list) {
-            actor.step();
+            if (actor instanceof MovingPolygon) {
+                ((MovingPolygon) actor).step(getWidth(), getHeight());
+            } else {
+                actor.step();
+            }
         }
         repaint();
     }
+
+
+    public void remove(Actor actor) {
+        list.remove(actor);
+    }
+
 
 }

@@ -9,7 +9,7 @@ import java.awt.Color;
  * Example game with a sprite that moves around the screen.
  */
 public class VideoGame implements ActionListener {
-
+    private Sprite sprite;
     private Drawing drawing;
     private Toolkit toolkit;
     private MovingPolygon mpoly;
@@ -18,15 +18,14 @@ public class VideoGame implements ActionListener {
      * Set up the drawing and window frame.
      */
     public VideoGame() {
-        Sprite sprite = new Sprite("face-smile.png", 25, 150);
+        sprite = new Sprite("face-smile.png", 25, 150);
         drawing = new Drawing(800, 600);
         drawing.add(sprite);
         drawing.addKeyListener(sprite);
         drawing.setFocusable(true);
 
-        mpoly = new MovingPolygon(3, 50, Color.GREEN, 100, 80, 50, 50);
+        mpoly = new MovingPolygon(3, 30, Color.GREEN, 100, 80, 4, 4);
         drawing.add(mpoly);
-        mpoly.translate(100, 80);
 
 
         JFrame frame = new JFrame("Video Game");
@@ -40,9 +39,14 @@ public class VideoGame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         drawing.step();
-        mpoly.step(50, 50);
-        mpoly.draw(drawing.getGraphics());
+//        mpoly.draw(drawing.getGraphics());
+        if (sprite.collides_with(mpoly)) {
+            drawing.remove(mpoly);
+        }
         toolkit.sync();
+
+        System.out.println(sprite.collides_with(mpoly));
+
     }
 
     /**

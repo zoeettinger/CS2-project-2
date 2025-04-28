@@ -45,4 +45,8 @@ public class DrawablePolygon extends Polygon implements Actor {
         p.color = Color.GREEN;
     }
 
+    @Override
+    public boolean collides_with(Actor actor) {
+        return false;
+    }
 }

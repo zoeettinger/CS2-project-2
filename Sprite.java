@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-
+import java.awt.Rectangle;
 /**
  * A small character that can move around the screen.
  */
@@ -82,4 +82,32 @@ public class Sprite implements Actor, KeyListener {
         // do nothing
     }
 
+    public Rectangle getBounds() {
+        return new Rectangle(
+                xpos, ypos,
+                image.getWidth(null),
+                image.getHeight(null));
+    }
+
+    @Override
+    public boolean collides_with(Actor actor) {
+
+        Rectangle me = getBounds();          // my hit-box
+
+        // ----- polygon targets -----
+        if (actor instanceof DrawablePolygon) {
+            Rectangle polyBox =
+                    (actor instanceof MovingPolygon)      // moving?
+                            ? ((MovingPolygon) actor).getBounds()
+                            : ((DrawablePolygon) actor).getBounds();
+            return me.intersects(polyBox);
+        }
+
+        // ----- another sprite -----
+        if (actor instanceof Sprite) {
+            return me.intersects(((Sprite) actor).getBounds());
+        }
+
+        return false;   // unknown actor type
+    }
 }

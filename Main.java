@@ -15,7 +15,7 @@ public class Main {
     public static void main(String[] args) {
 
         // create some regular polygons
-        DrawablePolygon p1 = new MovingPolygon(3, 50, Color.GREEN, 100, 80, 50, 50);
+        DrawablePolygon p1 = new MovingPolygon(3, 50, Color.GREEN, 100, 80, 1, 1);
         DrawablePolygon p2 = new RegularPolygon(6, 50, Color.ORANGE);
         DrawablePolygon p3 = new RegularPolygon(360, 50, Color.BLUE);
 
