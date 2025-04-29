@@ -76,6 +76,11 @@ public class VideoGame implements ActionListener, KeyListener {
         drawing.addMouseListener(clickActor);
 
 
+        // UNCOMMENT BELOW TO ADD HIGHLIGHTING ON MOUSE
+//        MoveActor moveactor = new MoveActor(20, new Color(255, 0, 0, 98));
+//        drawing.add(moveactor);
+//        drawing.addMouseMotionListener(moveactor);
+
 
         JFrame frame = new JFrame("Video Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
